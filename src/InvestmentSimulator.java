@@ -8,9 +8,15 @@ import javax.swing.DefaultListModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
- *
+ *what I have to do: 
+ * set up advance year button:
+ * -growth methods for each child class
+ * -;static method to growAll?
+ * -input bar for classes necessary - if statements in buybtn method
+ * make sure you can't buy something you own, or sell something you don't
+ * display menus for each child class 
+ * labels for totals(assets, values, growth since start, age...)
  * @author luke2720
  */
 public class InvestmentSimulator extends javax.swing.JFrame {
@@ -20,30 +26,30 @@ public class InvestmentSimulator extends javax.swing.JFrame {
      */
     DefaultListModel model = new DefaultListModel();
     ArrayList<Investment> invs;
-   // ArrayList<Property> props;
-    ArrayList<Investment>owned;
-    
+    // ArrayList<Property> props;
+    ArrayList<Investment> owned;
+    boolean buyOn;
+
     public InvestmentSimulator() {
         initComponents();
-        buybutton.setEnabled(false);
+        buyOn = true;
+        
+        sellbtn.setEnabled(false);//start is on buy all menu, so cant sell
         invs = new ArrayList();
         owned = new ArrayList();
-        invs.add(new Property(50000,80,"Ranchy Ranch"));
-        invs.add(new Property(1200000,90,"Mansion"));
-        invs.add(new Property(1000,25,"Beater"));
-        invs.add(new Stock(200,2,50,"Apple"));
+        invs.add(new Property(50000, 80, "Ranchy Ranch"));//fill arrays
+        invs.add(new Property(1200000, 90, "Mansion"));
+        invs.add(new Property(1000, 25, "Beater"));
+        invs.add(new Stock(200, 2, 50, "Apple"));
         list.setModel(model);
         listlbl.setText("Available Investments");
         sort();
-        
+
         for (Investment inv : invs) {
-            
+
             model.addElement(inv.getName());
         }
-        
-        
-        
-        
+
     }
 
     /**
@@ -67,8 +73,19 @@ public class InvestmentSimulator extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         buy = new javax.swing.JMenu();
         buyall = new javax.swing.JMenuItem();
+        buyprops = new javax.swing.JMenuItem();
+        buystocks = new javax.swing.JMenuItem();
+        buyvehc = new javax.swing.JMenuItem();
+        buyart = new javax.swing.JMenuItem();
+        buylott = new javax.swing.JMenuItem();
+        buycomp = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         sellall = new javax.swing.JMenuItem();
+        sellprops = new javax.swing.JMenuItem();
+        sellstocks = new javax.swing.JMenuItem();
+        sellvehc = new javax.swing.JMenuItem();
+        sellart = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -120,6 +137,24 @@ public class InvestmentSimulator extends javax.swing.JFrame {
         });
         buy.add(buyall);
 
+        buyprops.setText("Properties");
+        buy.add(buyprops);
+
+        buystocks.setText("Stocks");
+        buy.add(buystocks);
+
+        buyvehc.setText("Vehicles");
+        buy.add(buyvehc);
+
+        buyart.setText("Artifacts");
+        buy.add(buyart);
+
+        buylott.setText("Lottery");
+        buy.add(buylott);
+
+        buycomp.setText("Company");
+        buy.add(buycomp);
+
         jMenuBar1.add(buy);
 
         jMenu2.setText("Sell");
@@ -131,6 +166,26 @@ public class InvestmentSimulator extends javax.swing.JFrame {
             }
         });
         jMenu2.add(sellall);
+
+        sellprops.setText("Properties");
+        jMenu2.add(sellprops);
+
+        sellstocks.setText("Stocks");
+        jMenu2.add(sellstocks);
+
+        sellvehc.setText("Vehicles");
+        sellvehc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sellvehcActionPerformed(evt);
+            }
+        });
+        jMenu2.add(sellvehc);
+
+        sellart.setText("Artifacts");
+        jMenu2.add(sellart);
+
+        jMenuItem13.setText("Company");
+        jMenu2.add(jMenuItem13);
 
         jMenuBar1.add(jMenu2);
 
@@ -151,29 +206,30 @@ public class InvestmentSimulator extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                .addGap(279, 279, 279)
-                .addComponent(listlbl, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(155, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buybutton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(sellbtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(buybutton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sellbtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(listlbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 124, Short.MAX_VALUE)
+                .addGap(24, 24, 24)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addComponent(buybutton)
                 .addGap(32, 32, 32)
                 .addComponent(sellbtn)
@@ -181,11 +237,9 @@ public class InvestmentSimulator extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(127, 127, 127))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addGap(23, 23, 23)
-                .addComponent(listlbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(57, 57, 57)
+                .addComponent(listlbl, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane3)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
@@ -197,61 +251,70 @@ public class InvestmentSimulator extends javax.swing.JFrame {
 
     private void buyallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyallActionPerformed
         // TODO add your handling code here:
+        buybutton.setEnabled(true);
+        sellbtn.setEnabled(false);
+        buyOn = true;
         listlbl.setText("Available Investments");
         model.clear();
-        for(Investment inv:invs){
+        for (Investment inv : invs) {
             model.addElement(inv.getName());
         }
     }//GEN-LAST:event_buyallActionPerformed
 
-    private void sort(){
+    private void sort() {
         Collections.sort(invs);
         Collections.sort(owned);
-        
+
     }
-    
+
     private void listMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMouseClicked
-        sort();
-        int loc = search(invs, (Investment)(new Stock(0,0,0,list.getSelectedValue())));//make boolean for list
-        text.setText(invs.get(loc).toString());
-        buybutton.setEnabled(true);//can only buy when an investment is selected
+        sort();//always sort before searching
+        if (buyOn) {
+            int loc = search(invs, (Investment) (new Stock(0, 0, 0, list.getSelectedValue())));//make boolean for list
+            text.setText(invs.get(loc).toString());
+        } else {
+            int loc = search(owned, (Investment) (new Stock(0, 0, 0, list.getSelectedValue())));//make boolean for list
+            text.setText(owned.get(loc).toString());
+        }
         
+
     }//GEN-LAST:event_listMouseClicked
 
     private void buybuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buybuttonActionPerformed
         // TODO add your handling code here:
-        if(list.getModel()==model){
+        if (!list.isSelectionEmpty()) {//have to have an item selected
             owned.add(invs.get(list.getSelectedIndex()));
+            text.setText((invs.get(list.getSelectedIndex())).getName() + " purchased for $" + (invs.get(list.getSelectedIndex())).getValue());
             invs.remove(list.getSelectedIndex());
             model.remove(list.getSelectedIndex());
             //search child class array to find same name, remove instance from all arrays
         }
     }//GEN-LAST:event_buybuttonActionPerformed
 
-    public static int search (ArrayList a, Object searchValue){
-        
-	   int left = 0;
-	   int right = a.size()-1;
-	   while (left <= right){
-	      int midpoint = (left + right) / 2;
-	      int result = ((Comparable)a.get(midpoint)).compareTo(searchValue); 
-	      if (result == 0)
-	         return midpoint;
-	      else if (result < 0)
-	         left = midpoint + 1;
-	      else
-	         right = midpoint-1;
-	   }
-	   return -1;
-}
-    
-    
-    
+    public static int search(ArrayList a, Object searchValue) {
+
+        int left = 0;
+        int right = a.size() - 1;
+        while (left <= right) {
+            int midpoint = (left + right) / 2;
+            int result = ((Comparable) a.get(midpoint)).compareTo(searchValue);
+            if (result == 0) {
+                return midpoint;
+            } else if (result < 0) {
+                left = midpoint + 1;
+            } else {
+                right = midpoint - 1;
+            }
+        }
+        return -1;
+    }
+
+
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
         model.clear();
         for (Investment inv : invs) {
-            if(inv instanceof Property){
+            if (inv instanceof Property) {
                 model.addElement(inv.getName());
             }
         }
@@ -260,28 +323,32 @@ public class InvestmentSimulator extends javax.swing.JFrame {
     private void sellbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellbtnActionPerformed
         // TODO add your handling code here:
         //find way to find selection in table, otherwise will have to use list
-            if(!list.isSelectionEmpty()){
+        if (!list.isSelectionEmpty()) {
             invs.add(owned.get(list.getSelectedIndex()));
+            text.setText((owned.get(list.getSelectedIndex())).getName() + " sold for $" + (owned.get(list.getSelectedIndex())).getValue());
             owned.remove(list.getSelectedIndex());
             model.remove(list.getSelectedIndex());
-            //search child class array to find same name, remove instance from all arrays
-            }
+
+        }
+
     }//GEN-LAST:event_sellbtnActionPerformed
 
     private void sellallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellallActionPerformed
         // TODO add your handling code here:
+        buybutton.setEnabled(false);
+        sellbtn.setEnabled(true);
+        buyOn = false;
         model.clear();
         listlbl.setText("Owned Assets");
-        for(Investment inv:owned){
+        for (Investment inv : owned) {
             model.addElement(inv.getName());
         }
     }//GEN-LAST:event_sellallActionPerformed
 
-    
-        
-    
-      
-    
+    private void sellvehcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellvehcActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sellvehcActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -320,11 +387,18 @@ public class InvestmentSimulator extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu buy;
     private javax.swing.JMenuItem buyall;
+    private javax.swing.JMenuItem buyart;
     private javax.swing.JButton buybutton;
+    private javax.swing.JMenuItem buycomp;
+    private javax.swing.JMenuItem buylott;
+    private javax.swing.JMenuItem buyprops;
+    private javax.swing.JMenuItem buystocks;
+    private javax.swing.JMenuItem buyvehc;
     private javax.swing.JButton jButton1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -332,7 +406,11 @@ public class InvestmentSimulator extends javax.swing.JFrame {
     private javax.swing.JList<String> list;
     private javax.swing.JLabel listlbl;
     private javax.swing.JMenuItem sellall;
+    private javax.swing.JMenuItem sellart;
     private javax.swing.JButton sellbtn;
+    private javax.swing.JMenuItem sellprops;
+    private javax.swing.JMenuItem sellstocks;
+    private javax.swing.JMenuItem sellvehc;
     private javax.swing.JTextArea text;
     // End of variables declaration//GEN-END:variables
 }
