@@ -43,5 +43,7 @@ public class Lottery extends Investment{
         }
         return false;
     }
+
+    
     
 }

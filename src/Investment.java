@@ -13,7 +13,6 @@ public abstract class Investment implements Comparable{
     
     
     public abstract void grow();
-    public abstract String getclass();
     
     
     public int compareTo(Object o){
