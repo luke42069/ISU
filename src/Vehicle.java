@@ -6,11 +6,12 @@ public class Vehicle extends Investment{
     public Vehicle(int p, int cond,String n) {
         super(p,n);
         condition=cond;
+        growth=(double)condition/100;
     }
 
     @Override
     public void grow() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        curval*=(double)condition/100;//depreciates more the worse the condition is
     }
     
     public void deteriorate(){
@@ -30,6 +31,13 @@ public class Vehicle extends Investment{
         expenses=getRepcost();
         expenses+=4000;//gas
         return expenses;
+    }
+    
+    public String toString(){
+        String x = "Type: Vehicle";
+        x += super.toString();
+        x+="\nCondition: "+condition+" / 100";
+        return x;
     }
     
 }

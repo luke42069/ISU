@@ -21,31 +21,49 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Properties"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buypropsActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="buystocks">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Stocks"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buystocksActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="buyvehc">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Vehicles"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buyvehcActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="buyart">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Artifacts"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buyartActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="buylott">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Lottery"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buylottActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="buycomp">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Company"/>
+                <Property name="text" type="java.lang.String" value="Companies"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buycompActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -66,11 +84,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Properties"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sellpropsActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="sellstocks">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Stocks"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sellstocksActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="sellvehc">
               <Properties>
@@ -84,23 +108,63 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Artifacts"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sellartActionPerformed"/>
+              </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem13">
+            <MenuItem class="javax.swing.JMenuItem" name="selllott">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Company"/>
+                <Property name="text" type="java.lang.String" value="Lottery"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selllottActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="sellowne">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Companies"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sellowneActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Display"/>
+            <Property name="text" type="java.lang.String" value="Manage"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="mngall">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="All"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mngprops">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Properties"/>
+              </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mngpropsActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Stocks"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mngvehc">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Vehicles"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mngvehcActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Companies"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -131,11 +195,18 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="1" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace pref="155" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="asslbl" pref="101" max="32767" attributes="0"/>
+                  <Component id="mnylbl" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace pref="42" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="buybutton" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                  <Component id="sellbtn" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                  <Component id="jTextField1" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="buybutton" alignment="1" pref="59" max="32767" attributes="0"/>
+                      <Component id="sellbtn" alignment="1" pref="59" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="btnrep" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -148,7 +219,7 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <Component id="btnadvance" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -157,14 +228,24 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="77" max="32767" attributes="0"/>
+              <Component id="btnadvance" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="78" max="32767" attributes="0"/>
               <Component id="buybutton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-              <Component id="sellbtn" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="sellbtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                      <Component id="btnrep" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Component id="mnylbl" min="-2" pref="28" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="asslbl" min="-2" pref="31" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
@@ -180,10 +261,13 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="btnadvance">
       <Properties>
         <Property name="text" type="java.lang.String" value="Advance Year"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnadvanceActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="buybutton">
       <Properties>
@@ -200,11 +284,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sellbtnActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextField1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField1"/>
-      </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <AuxValues>
@@ -252,6 +331,24 @@
     <Component class="javax.swing.JLabel" name="listlbl">
       <Properties>
         <Property name="text" type="java.lang.String" value="List"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnrep">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Repair"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnrepActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="mnylbl">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cash: $"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="asslbl">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Assets: $"/>
       </Properties>
     </Component>
   </SubComponents>

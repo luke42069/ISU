@@ -1,6 +1,10 @@
 
+import java.util.ArrayList;
+
+
 public abstract class Investment implements Comparable{
-    protected int price, initval, curval, age, growth, expenses;
+    protected int price, initval, curval, age, expenses;
+    protected double growth;
     protected String name;
     
     public Investment(int p,String n){
@@ -11,6 +15,28 @@ public abstract class Investment implements Comparable{
         name = n;
     }
     
+    public Investment(){
+        price = 0;
+        initval=0;
+        curval = 0;
+        age = 0;
+        name = "Null Investment";
+    }
+    
+    
+    public static void passYear(ArrayList<Investment> x){//remove lottery from owned
+        x.forEach((i) -> {
+            i.grow();//grow first so values in text area can be relied on for the next year
+             if(i instanceof Property){
+                ((Property)i).fluctuateMarket();
+                ((Property)i).deteriorate();
+            }
+            else if(i instanceof Vehicle){
+                ((Vehicle)i).deteriorate();
+            }
+        });
+        
+    }
     
     public abstract void grow();
     
@@ -41,17 +67,15 @@ public abstract class Investment implements Comparable{
     }
     
     public String toString(){
-        String x = name;
+        String x = "\n"+name;
         x+="\nPrice: $"+price;
-        x+="\nCurrent yearly growth: "+growth+"%";
+        x+="\nCurrent yearly growth: "+(growth-100)+"%";
         x+="\nYearly expenses: $"+expenses;
         return x;
     }
     
     
     
-    //boolean isOwned, 
-    //certain number of investments will always exist, they grow regardless of whether they are owned or not.
     
     
     

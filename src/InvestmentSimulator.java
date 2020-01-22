@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -9,14 +10,12 @@ import javax.swing.DefaultListModel;
  * and open the template in the editor.
  */
 /**
- *what I have to do: 
- * set up advance year button:
- * -growth methods for each child class
- * -;static method to growAll?
- * -input bar for classes necessary - if statements in buybtn method
- * make sure you can't buy something you own, or sell something you don't
- * display menus for each child class 
- * labels for totals(assets, values, growth since start, age...)
+ * what I have to do: set up advance year button: -growth methods for each child
+ * class -;static method to growAll? -input bar for classes necessary - if
+ * statements in buybtn method make sure you can't buy something you own, or
+ * sell something you don't display menus for each child class labels for
+ * totals(assets, values, growth since start, age...)
+ *
  * @author luke2720
  */
 public class InvestmentSimulator extends javax.swing.JFrame {
@@ -24,23 +23,43 @@ public class InvestmentSimulator extends javax.swing.JFrame {
     /**
      * Creates new form InvestmentSimulator
      */
+    //function variables:
     DefaultListModel model = new DefaultListModel();
     ArrayList<Investment> invs;
-    // ArrayList<Property> props;
     ArrayList<Investment> owned;
     boolean buyOn;
 
+    //user variables:
+    int cash, assets;
+
     public InvestmentSimulator() {
         initComponents();
+        cash = 50000;
+        assets=0;
+        mnylbl.setText("Cash: "+cash);
+        asslbl.setText("Assets: "+assets);
         buyOn = true;
-        
+        btnrep.setVisible(false);//can only repair when viewing repairable assets
         sellbtn.setEnabled(false);//start is on buy all menu, so cant sell
         invs = new ArrayList();
         owned = new ArrayList();
-        invs.add(new Property(50000, 80, "Ranchy Ranch"));//fill arrays
-        invs.add(new Property(1200000, 90, "Mansion"));
-        invs.add(new Property(1000, 25, "Beater"));
-        invs.add(new Stock(200, 2, 50, "Apple"));
+        //invs.add(new Property(50000, 80, "Ranchy Ranch"));//fill arrays
+        //invs.add(new Property(1200000, 90, "Mansion"));
+       // invs.add(new Property(1000, 25, "Beater"));
+        //invs.add(new Stock(200, 2, 50, "Apple"));
+        //invs.add(new Stock(300, 3, 60, "Nike"));
+        //invs.add(new Stock(150, 4, 20, "Amazon"));
+       // invs.add(new Vehicle(2000, 43, "1998 Honda Civic"));
+        //invs.add(new Vehicle(40000, 100, "2020 Honda Accord"));
+        //invs.add(new Vehicle(150000, 92, "2019 Mercedes-Benz G Wagon"));
+        //invs.add(new Artifact(600, "Donald Trump's Wig", 4));
+        //invs.add(new Artifact(30000, "Dinosaur Bone", 3));
+        //invs.add(new Artifact(10000, "Strand of Luke Chennette's Hair", 5));
+        invs.add(new Ownership(10000000, "Innovative Technology, Inc", 3, 4, 5));
+        invs.add(new Ownership(300000000, "El Chapo Flour Products LTD", 1, 4, 3));
+        invs.add(new Ownership(95000, "Grandma's Bookstore", 5, 3, 4));
+        //still have to add lottery
+
         list.setModel(model);
         listlbl.setText("Available Investments");
         sort();
@@ -61,15 +80,17 @@ public class InvestmentSimulator extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        btnadvance = new javax.swing.JButton();
         buybutton = new javax.swing.JButton();
         sellbtn = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         list = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         text = new javax.swing.JTextArea();
         listlbl = new javax.swing.JLabel();
+        btnrep = new javax.swing.JButton();
+        mnylbl = new javax.swing.JLabel();
+        asslbl = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         buy = new javax.swing.JMenu();
         buyall = new javax.swing.JMenuItem();
@@ -85,13 +106,23 @@ public class InvestmentSimulator extends javax.swing.JFrame {
         sellstocks = new javax.swing.JMenuItem();
         sellvehc = new javax.swing.JMenuItem();
         sellart = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
+        selllott = new javax.swing.JMenuItem();
+        sellowne = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        mngall = new javax.swing.JMenuItem();
+        mngprops = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        mngvehc = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Advance Year");
+        btnadvance.setText("Advance Year");
+        btnadvance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnadvanceActionPerformed(evt);
+            }
+        });
 
         buybutton.setText("Buy");
         buybutton.addActionListener(new java.awt.event.ActionListener() {
@@ -106,8 +137,6 @@ public class InvestmentSimulator extends javax.swing.JFrame {
                 sellbtnActionPerformed(evt);
             }
         });
-
-        jTextField1.setText("jTextField1");
 
         list.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -127,6 +156,17 @@ public class InvestmentSimulator extends javax.swing.JFrame {
 
         listlbl.setText("List");
 
+        btnrep.setText("Repair");
+        btnrep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnrepActionPerformed(evt);
+            }
+        });
+
+        mnylbl.setText("Cash: $");
+
+        asslbl.setText("Assets: $");
+
         buy.setText("Buy");
 
         buyall.setText("All");
@@ -138,21 +178,51 @@ public class InvestmentSimulator extends javax.swing.JFrame {
         buy.add(buyall);
 
         buyprops.setText("Properties");
+        buyprops.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buypropsActionPerformed(evt);
+            }
+        });
         buy.add(buyprops);
 
         buystocks.setText("Stocks");
+        buystocks.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buystocksActionPerformed(evt);
+            }
+        });
         buy.add(buystocks);
 
         buyvehc.setText("Vehicles");
+        buyvehc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buyvehcActionPerformed(evt);
+            }
+        });
         buy.add(buyvehc);
 
         buyart.setText("Artifacts");
+        buyart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buyartActionPerformed(evt);
+            }
+        });
         buy.add(buyart);
 
         buylott.setText("Lottery");
+        buylott.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buylottActionPerformed(evt);
+            }
+        });
         buy.add(buylott);
 
-        buycomp.setText("Company");
+        buycomp.setText("Companies");
+        buycomp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buycompActionPerformed(evt);
+            }
+        });
         buy.add(buycomp);
 
         jMenuBar1.add(buy);
@@ -168,9 +238,19 @@ public class InvestmentSimulator extends javax.swing.JFrame {
         jMenu2.add(sellall);
 
         sellprops.setText("Properties");
+        sellprops.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sellpropsActionPerformed(evt);
+            }
+        });
         jMenu2.add(sellprops);
 
         sellstocks.setText("Stocks");
+        sellstocks.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sellstocksActionPerformed(evt);
+            }
+        });
         jMenu2.add(sellstocks);
 
         sellvehc.setText("Vehicles");
@@ -182,21 +262,57 @@ public class InvestmentSimulator extends javax.swing.JFrame {
         jMenu2.add(sellvehc);
 
         sellart.setText("Artifacts");
+        sellart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sellartActionPerformed(evt);
+            }
+        });
         jMenu2.add(sellart);
 
-        jMenuItem13.setText("Company");
-        jMenu2.add(jMenuItem13);
+        selllott.setText("Lottery");
+        selllott.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selllottActionPerformed(evt);
+            }
+        });
+        jMenu2.add(selllott);
+
+        sellowne.setText("Companies");
+        sellowne.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sellowneActionPerformed(evt);
+            }
+        });
+        jMenu2.add(sellowne);
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Display");
+        jMenu3.setText("Manage");
 
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        mngall.setText("All");
+        jMenu3.add(mngall);
+
+        mngprops.setText("Properties");
+        mngprops.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                mngpropsActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem2);
+        jMenu3.add(mngprops);
+
+        jMenuItem4.setText("Stocks");
+        jMenu3.add(jMenuItem4);
+
+        mngvehc.setText("Vehicles");
+        mngvehc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mngvehcActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mngvehc);
+
+        jMenuItem5.setText("Companies");
+        jMenu3.add(jMenuItem5);
 
         jMenuBar1.add(jMenu3);
 
@@ -207,11 +323,16 @@ public class InvestmentSimulator extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(155, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(asslbl, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                    .addComponent(mnylbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buybutton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sellbtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(buybutton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                        .addComponent(sellbtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE))
+                    .addComponent(btnrep, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(listlbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -221,21 +342,28 @@ public class InvestmentSimulator extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jButton1)
+                .addComponent(btnadvance)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addComponent(btnadvance)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
                 .addComponent(buybutton)
-                .addGap(32, 32, 32)
-                .addComponent(sellbtn)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(127, 127, 127))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(sellbtn)
+                        .addGap(38, 38, 38)
+                        .addComponent(btnrep))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(mnylbl, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(asslbl, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(104, 104, 104))
             .addGroup(layout.createSequentialGroup()
                 .addGap(57, 57, 57)
                 .addComponent(listlbl, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -249,10 +377,18 @@ public class InvestmentSimulator extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void changeMoney(int m) {
+        cash += m;
+        mnylbl.setText("Cash: $" + cash);
+        assets -= m;
+        asslbl.setText("Assets: $" + assets);
+    }
+
     private void buyallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyallActionPerformed
         // TODO add your handling code here:
         buybutton.setEnabled(true);
         sellbtn.setEnabled(false);
+        btnrep.setVisible(false);
         buyOn = true;
         listlbl.setText("Available Investments");
         model.clear();
@@ -264,7 +400,6 @@ public class InvestmentSimulator extends javax.swing.JFrame {
     private void sort() {
         Collections.sort(invs);
         Collections.sort(owned);
-
     }
 
     private void listMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMouseClicked
@@ -276,18 +411,80 @@ public class InvestmentSimulator extends javax.swing.JFrame {
             int loc = search(owned, (Investment) (new Stock(0, 0, 0, list.getSelectedValue())));//make boolean for list
             text.setText(owned.get(loc).toString());
         }
-        
+
 
     }//GEN-LAST:event_listMouseClicked
 
     private void buybuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buybuttonActionPerformed
         // TODO add your handling code here:
         if (!list.isSelectionEmpty()) {//have to have an item selected
-            owned.add(invs.get(list.getSelectedIndex()));
-            text.setText((invs.get(list.getSelectedIndex())).getName() + " purchased for $" + (invs.get(list.getSelectedIndex())).getValue());
-            invs.remove(list.getSelectedIndex());
-            model.remove(list.getSelectedIndex());
-            //search child class array to find same name, remove instance from all arrays
+            int loc = search(invs, (Investment) (new Stock(0, 0, 0, list.getSelectedValue())));//find item's position in arraylist to use for searching, use stock as placeholder and compare based on name
+            
+            if (invs.get(loc) instanceof Ownership) {
+                int per = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter percentage stake of " + invs.get(loc).getName() + " you would like to make an offer on.", 0));
+                int offer=Integer.parseInt(JOptionPane.showInputDialog(this, "Enter amount you would like to offer for " + per + "% "
+                        + "of " + invs.get(loc).getName() + "\n(Estimated Value: $" + ((Ownership) invs.get(loc)).perValue(per) + ")", 0));
+                while(true){ offer = Integer.parseInt(JOptionPane.showInputDialog(this, "Insufficient funds. Enter new amount you would like to offer for " + per + "% "
+                        + "of " + invs.get(loc).getName() + "\n(Estimated Value: $" + ((Ownership) invs.get(loc)).perValue(per) + ")", 0));
+                if(offer<=cash)break;}
+                if (((Ownership) invs.get(loc)).acceptsOffer(per, offer)) {//if company accepts
+                    text.setText(per + "% of " + invs.get(loc).getName() + " purchased for $" + offer);
+                    changeMoney(-offer);//negative so method will subtract money spent 
+                    owned.add(invs.get(loc));//add to owned
+                    invs.remove(loc);//remove from invs array 
+                    model.remove(list.getSelectedIndex());
+                } else {
+                    text.setText("Your offer has been rejected.");
+                }
+
+            } else if (invs.get(loc) instanceof Property) {    
+                if(cash>=invs.get(loc).getValue()){
+                ((Property) invs.get(loc)).setMg(JOptionPane.showInputDialog(this, "Enter \"y\" if you would like to hire management to repair property at a cost of $2000 per year.", 0).equals("y"));//set management boolean
+                owned.add(invs.get(list.getSelectedIndex()));//add to owned
+                text.setText((invs.get(loc)).getName() + " purchased for $" + (invs.get(loc).getValue()));
+                changeMoney(-invs.get(loc).getValue());//negative so method subtracts money spent
+                invs.remove(loc);//remove from invs array
+                model.remove(list.getSelectedIndex());
+            }
+                else text.setText("Insufficient funds to purchase "+invs.get(loc).getName());}
+            else if (invs.get(loc) instanceof Lottery) {
+                int t = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter amount of tickets you would like to purchase.", 0));
+                if (((Lottery) invs.get(loc)).setTickets(t)&&cash>=(t*5)) {
+                    text.setText(t + " lottery tickets purchased for " + t * 5 + ".");//price per ticket is $5
+                    changeMoney(-t*5);
+                    owned.add(invs.get(loc));//add to owned
+                invs.remove(loc);//remove from invs array 
+                model.remove(list.getSelectedIndex());
+                } else {
+                    text.setText("Invalid amount of tickets to purchase or insufficient funds.");
+                }
+
+            } else if (invs.get(loc) instanceof Stock) {
+                int q = Integer.parseInt((JOptionPane.showInputDialog(this, "Enter quantity of " + invs.get(loc).getName() + " stocks you would like to purchase."
+                        + "\nPrice per stock: $" + invs.get(loc).getValue(), 0)));
+                while(q*invs.get(loc).getValue()<=cash&&q>=0){//have enough cash to afford and quantity above 0
+                    q = Integer.parseInt((JOptionPane.showInputDialog(this, "Insufficient funds or invalid number. Enter quantity of " + invs.get(loc).getName() + " stocks you would like to purchase."
+                        + "\nPrice per stock: $" + invs.get(loc).getValue(), 0)));
+                }
+                ((Stock) invs.get(loc)).setQuantity(q);
+                text.setText(q + " stocks of " + invs.get(loc).getName() + " purchased for $" + invs.get(loc).getValue() * q + "."); //calculate price: value*amount
+                changeMoney(-invs.get(loc).getValue()*q);//same as line above to calculate price, negative because spending
+                int loc2 = search(owned, (Investment) (new Stock(0, 0, 0, list.getSelectedValue())));//search owned to check if it is already owned, if not search will return -1
+                if(loc2==-1)owned.add(invs.get(loc));//add to owned
+                else ((Stock)owned.get(loc2)).setQuantity(q + ((Stock)owned.get(loc2)).getQuantity());//add new quantity to old one
+                
+            } else {
+                if(invs.get(loc).getValue()<=cash){//can purchase
+                owned.add(invs.get(loc));//add to owned
+                text.setText((invs.get(loc)).getName() + " purchased for $" + (invs.get(loc)).getValue());
+                invs.remove(loc);//remove from invs array 
+                model.remove(list.getSelectedIndex());
+                changeMoney(-invs.get(loc).getValue());
+            }
+                else text.setText("Insufficient funds.");
+               
+            }
+
         }
     }//GEN-LAST:event_buybuttonActionPerformed
 
@@ -310,24 +507,38 @@ public class InvestmentSimulator extends javax.swing.JFrame {
     }
 
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-        model.clear();
-        for (Investment inv : invs) {
-            if (inv instanceof Property) {
-                model.addElement(inv.getName());
-            }
-        }
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
     private void sellbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellbtnActionPerformed
         // TODO add your handling code here:
         //find way to find selection in table, otherwise will have to use list
         if (!list.isSelectionEmpty()) {
-            invs.add(owned.get(list.getSelectedIndex()));
-            text.setText((owned.get(list.getSelectedIndex())).getName() + " sold for $" + (owned.get(list.getSelectedIndex())).getValue());
-            owned.remove(list.getSelectedIndex());
-            model.remove(list.getSelectedIndex());
+            int loc = search(owned, (Investment) (new Stock(0, 0, 0, list.getSelectedValue())));//find item's position in arraylist to use for searching
+
+            if (owned.get(loc) instanceof Stock) {
+                int sellv = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter amount of " + owned.get(loc).getName() + " stocks you would like to sell at $" + owned.get(loc).getValue() + " each.", 0));
+                while (sellv >= 0 && sellv <= ((Stock) owned.get(loc)).getQuantity()) {//validate number (cant sell more than owned or <0)
+                    sellv = Integer.parseInt(JOptionPane.showInputDialog(this, "Invalid input. "
+                            + "\nEnter amount of " + owned.get(loc).getName() + " stocks you would like to sell at $" + owned.get(loc).getValue() + " each.", 0));
+                }
+                if (sellv == ((Stock) owned.get(loc)).getQuantity()) {//if selling all stocks
+                    invs.add(owned.get(loc));
+                    owned.remove(loc);
+                } else {
+                    ((Stock) owned.get(loc)).setQuantity(((Stock) owned.get(loc)).getQuantity() - sellv);//set quantity, to quantity minus sell value
+                }
+                changeMoney(sellv * owned.get(loc).getValue());//calculate price of stocks sold
+            } else {
+
+                invs.add(owned.get(loc));
+                text.setText((owned.get(loc)).getName() + " sold for $" + (owned.get(list.getSelectedIndex())).getValue());
+                owned.remove(loc);
+                model.remove(loc);
+                if (owned.get(loc) instanceof Ownership) {
+                    changeMoney(((Ownership) owned.get(loc)).perValue(((Ownership) owned.get(loc)).getStake()));
+
+                } else {
+                    changeMoney(owned.get(loc).getValue());
+                }
+            }
 
         }
 
@@ -337,6 +548,7 @@ public class InvestmentSimulator extends javax.swing.JFrame {
         // TODO add your handling code here:
         buybutton.setEnabled(false);
         sellbtn.setEnabled(true);
+        btnrep.setVisible(false);
         buyOn = false;
         model.clear();
         listlbl.setText("Owned Assets");
@@ -347,7 +559,236 @@ public class InvestmentSimulator extends javax.swing.JFrame {
 
     private void sellvehcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellvehcActionPerformed
         // TODO add your handling code here:
+        buybutton.setEnabled(false);
+        sellbtn.setEnabled(true);
+        btnrep.setVisible(false);
+        model.clear();
+        for (Investment inv : owned) {
+            if (inv instanceof Vehicle) {
+                model.addElement(inv.getName());
+            }
+        }
     }//GEN-LAST:event_sellvehcActionPerformed
+
+    private void buypropsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buypropsActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(true);
+        sellbtn.setEnabled(false);
+        btnrep.setVisible(false);
+        buyOn = false;
+        model.clear();
+        for (Investment inv : invs) {
+            if (inv instanceof Property) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_buypropsActionPerformed
+
+    private void buystocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buystocksActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(true);
+        sellbtn.setEnabled(false);
+        btnrep.setVisible(false);
+        buyOn = true;
+        model.clear();
+        for (Investment inv : invs) {
+            if (inv instanceof Stock) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_buystocksActionPerformed
+
+    private void buyvehcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyvehcActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(true);
+        sellbtn.setEnabled(false);
+        btnrep.setVisible(false);
+        buyOn = true;
+        model.clear();
+        for (Investment inv : invs) {
+            if (inv instanceof Vehicle) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_buyvehcActionPerformed
+
+    private void buyartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyartActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(true);
+        sellbtn.setEnabled(false);
+        btnrep.setVisible(false);
+        buyOn = true;
+        model.clear();
+        for (Investment inv : invs) {
+            if (inv instanceof Artifact) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_buyartActionPerformed
+
+    private void buycompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buycompActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(true);
+        sellbtn.setEnabled(false);
+        btnrep.setVisible(false);
+        buyOn = true;
+        model.clear();
+        for (Investment inv : invs) {
+            if (inv instanceof Ownership) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_buycompActionPerformed
+
+    private void sellpropsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellpropsActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(false);
+        sellbtn.setEnabled(true);
+        btnrep.setVisible(false);
+        buyOn = false;
+        model.clear();
+        for (Investment inv : owned) {
+            if (inv instanceof Property) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_sellpropsActionPerformed
+
+    private void sellstocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellstocksActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(false);
+        sellbtn.setEnabled(true);
+        btnrep.setVisible(false);
+        buyOn = false;
+        model.clear();
+        for (Investment inv : owned) {
+            if (inv instanceof Stock) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_sellstocksActionPerformed
+
+    private void sellartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellartActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(false);
+        sellbtn.setEnabled(true);
+        btnrep.setVisible(false);
+        buyOn = false;
+        model.clear();
+        for (Investment inv : owned) {
+            if (inv instanceof Artifact) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_sellartActionPerformed
+
+    private void sellowneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellowneActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(false);
+        sellbtn.setEnabled(true);
+        btnrep.setVisible(false);
+        buyOn = false;
+        model.clear();
+        for (Investment inv : owned) {
+            if (inv instanceof Ownership) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_sellowneActionPerformed
+
+    private void buylottActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buylottActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(true);
+        sellbtn.setEnabled(false);
+        btnrep.setVisible(false);
+        buyOn = true;
+        buybutton.setEnabled(false);
+        sellbtn.setEnabled(true);
+        buyOn = false;
+        model.clear();
+        for (Investment inv : invs) {
+            if (inv instanceof Lottery) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_buylottActionPerformed
+
+    private void selllottActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selllottActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(false);
+        sellbtn.setEnabled(true);
+        btnrep.setVisible(false);
+        buyOn = false;
+        model.clear();
+        for (Investment inv : owned) {
+            if (inv instanceof Lottery) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_selllottActionPerformed
+
+    private void mngpropsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mngpropsActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(false);
+        sellbtn.setEnabled(false);
+        btnrep.setVisible(true);
+
+        buyOn = false;
+        model.clear();
+        for (Investment inv : owned) {
+            if (inv instanceof Property) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_mngpropsActionPerformed
+
+    private void mngvehcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mngvehcActionPerformed
+        // TODO add your handling code here:
+        buybutton.setEnabled(false);
+        sellbtn.setEnabled(false);
+        btnrep.setVisible(true);
+        
+        buyOn = false;
+        model.clear();
+        for (Investment inv : owned) {
+            if (inv instanceof Vehicle) {
+                model.addElement(inv.getName());
+            }
+        }
+    }//GEN-LAST:event_mngvehcActionPerformed
+
+    private void btnrepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrepActionPerformed
+        // TODO add your handling code here:
+        if (!list.isSelectionEmpty()) {//have to have an item selected
+            int loc = search(owned, (Investment) (new Stock(0, 0, 0, list.getSelectedValue())));//find item's position in arraylist to use for searching
+            if (owned.get(loc) instanceof Property) {
+                ((Property) owned.get(loc)).repair();
+            } else if (owned.get(loc) instanceof Vehicle) {
+                ((Vehicle) owned.get(loc)).repair();
+            }
+            changeMoney(-2000);
+        }
+    }//GEN-LAST:event_btnrepActionPerformed
+
+    private void btnadvanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnadvanceActionPerformed
+        // TODO add your handling code here:
+        Investment.passYear(owned);
+        //calculate new value of assets
+        
+        assets=0;
+        for (Investment inv : invs) {
+            if (inv instanceof Lottery){
+                assets+=inv.getValue();//will be jackpot if win, 0 if not
+                invs.remove(inv); //cant own lottery tickets longer than  a year
+            }
+            else if(inv instanceof Stock){
+                assets+= inv.getValue()*((Stock)inv).getQuantity();//multiply value by amount
+            }
+            else assets+= inv.getValue();
+            
+        }
+        
+    }//GEN-LAST:event_btnadvanceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -385,6 +826,9 @@ public class InvestmentSimulator extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel asslbl;
+    private javax.swing.JButton btnadvance;
+    private javax.swing.JButton btnrep;
     private javax.swing.JMenu buy;
     private javax.swing.JMenuItem buyall;
     private javax.swing.JMenuItem buyart;
@@ -394,20 +838,24 @@ public class InvestmentSimulator extends javax.swing.JFrame {
     private javax.swing.JMenuItem buyprops;
     private javax.swing.JMenuItem buystocks;
     private javax.swing.JMenuItem buyvehc;
-    private javax.swing.JButton jButton1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JList<String> list;
     private javax.swing.JLabel listlbl;
+    private javax.swing.JMenuItem mngall;
+    private javax.swing.JMenuItem mngprops;
+    private javax.swing.JMenuItem mngvehc;
+    private javax.swing.JLabel mnylbl;
     private javax.swing.JMenuItem sellall;
     private javax.swing.JMenuItem sellart;
     private javax.swing.JButton sellbtn;
+    private javax.swing.JMenuItem selllott;
+    private javax.swing.JMenuItem sellowne;
     private javax.swing.JMenuItem sellprops;
     private javax.swing.JMenuItem sellstocks;
     private javax.swing.JMenuItem sellvehc;

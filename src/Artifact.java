@@ -3,28 +3,32 @@ public class Artifact extends Investment{
 
     
     private int rarity;
-    private String name;
     
     public Artifact(int p,String n, int r) {
         super(p,n);
-        rarity = r;
+        rarity = r;//int /5
+        
     }
 
     @Override
     public void grow() {
         
-        curval=curval^rarity*age;//exponential growth
+        curval=initval*rarity^(age/10);//exponential growth, multiply by rarity every 10 years
         
     }
     
-    /*public void deteriorate(){//condition go down by at least 0.1%
-        condition*=(Math.random()*0.199+0.8);
-    }*/
-
-    @Override
-    public String getclass() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String toString(){
+        String x = "Type: Artifact\n";
+        x += name;
+        x+="\nPrice: $"+price;
+        x+="\nCurrent yearly growth: Exponential; increases by factor of "+rarity+" every 10 years";
+        x+="\nYearly expenses: $"+expenses;
+        return x;
     }
+    
+    
+
+    
     
     
 }

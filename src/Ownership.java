@@ -4,22 +4,44 @@ public class Ownership extends Investment{
     private int imp;//impressionability /5, 5 is more likely to accept offer
     private int wbg;//wellbeing /5, 5 is doing good so less likely to accept
     private int smt;//smartness /5, 5 is smarter so company will do better
+    private int stake;//percentage owned
     
-    public Ownership(int p, String n) {
+    public Ownership(int p, String n, int i,int w,int s) {//p is current value of company
         super(p, n);
+        imp = i;
+        wbg = w;
+        smt = s;
+        growth=(int)((Math.random()*25+25)+(20*smt));
     }
 
     @Override
     public void grow() {
-        growth=(int)((Math.random()*25+25)+(20*smt));//grows by smartness% of 100. 5 will always grow, 1 will always shrink
+        growth=(Math.random()*.15+.35)/*15% random, 35% guaranteed, rest based on smartness*/+(double)((smt*20)/100);//grows by smartness% of 100. 5 will always grow, 1 will always shrink
+        curval*=growth;
     }
     
+    public int perValue(int p){
+        return (int)(((double)p/100)*(double)curval);//keep as double for as long as possible to preserve accuracy
+    }
+    
+    public int getStake(){
+        return stake;
+    }
     
     public boolean acceptsOffer(int per, int offer){
-        
+        stake=per;
         int pervalue = curval/100*per;//calculate value of percent in question by division of total value
-        double score = (imp+5)^2-(wbg^2); //"willingness score" is the sum of wbg square and imp+5 (so imp always>wbg) square
-        return offer/pervalue*100+score>130;  //percent offer is of pervalue, plus score, >130 means accept offer -
+        double score = (Math.pow((imp+5), 2)); //"willingness score" is the sum of wbg square and imp+5 (so imp always>wbg) square 
+        System.out.println("Score "+score);
+        score-=(Math.pow(wbg, 2));
+        System.out.println("Imp "+imp+"   wbg "+wbg);
+        
+        System.out.println("Score: "+score);
+        System.out.println("offer: "+offer);
+        System.out.println("pervalue: "+pervalue);
+        System.out.println("percent offer of pervalue: "+(double)offer/pervalue*100);
+        System.out.println((double)offer/pervalue*100+score);
+        return (double)offer/(double)pervalue*100+score>130;  //percent offer is of pervalue, plus score, >130 means accept
         
         
         
@@ -38,6 +60,15 @@ public class Ownership extends Investment{
         1,5 = 11  
         5, 1 = 99
          */
+    }
+    
+    public String toString(){
+        String x = "Type: Company Ownership";
+        x+=super.toString();
+        x+="\nSmartness: "+smt+" / 5\n";
+        x+="Wellbeing: "+wbg+" / 5\n";
+        x+="Impressionability: "+imp+" / 5\n";
+        return x;
     }
     
 }

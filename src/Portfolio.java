@@ -1,5 +1,8 @@
 
+import java.util.ArrayList;
+
+
 public class Portfolio {
-    private int expenses, value, cash, assets, time, growth;
-    private ArrayList<Investment> assets = new ArrayList<Investment>;
+    private int expenses, value, cash, time, growth;
+    private ArrayList<Investment> assets;
 }//grow all method
